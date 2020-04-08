@@ -1,12 +1,14 @@
 import React from "react";
+import { removeItemFromCart } from "../../redux/actions";
 
 // NativeBase Components
 import { Text, Left, Body, Right, Button, ListItem, Icon } from "native-base";
 
 // Style
 import styles from "./styles";
+import { connect } from "react-redux";
 
-const CartItem = ({ item }) => (
+const CartItem = ({ item, removeItem }) => (
   <ListItem style={styles.listStyle}>
     <Left>
       <Text style={styles.drink}> {item.drink} </Text>
@@ -18,11 +20,15 @@ const CartItem = ({ item }) => (
       <Text style={styles.quantity}>{item.quantity}</Text>
     </Body>
     <Right>
-      <Button transparent>
+      <Button transparent onPress={() => removeItem(item)}>
         <Icon name="trash" style={styles.removeItem} />
       </Button>
     </Right>
   </ListItem>
 );
 
-export default CartItem;
+const mapDispatchToProps = (dispatch) => ({
+  removeItem: (item) => dispatch(removeItemFromCart(item)),
+});
+
+export default connect(null, mapDispatchToProps)(CartItem);
